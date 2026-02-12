@@ -163,16 +163,28 @@
   line-height: 1.6;
   margin-bottom: 30px;
 }
+/* Bouton Embaucher caché sur PC */
+.btn-embaucher {
+  display: none;
+}
+
 
 /* ========== MEDIA QUERIES (RESPONSIVE) ========== */
 
-/* Tablettes (moins de 768px) */
+/* Tablettes et mobiles (moins de 768px) */
 @media screen and (max-width: 768px) {
   .login-card {
     max-width: 400px;
     padding: 40px 30px;
   }
+
+  /* Afficher le bouton seulement sur mobile */
+  .btn-embaucher {
+    display: block;
+  }
 }
+
+
 
 /* Mobiles (moins de 480px) */
 @media screen and (max-width: 480px) {
