@@ -96,7 +96,7 @@ function Dashboard({ handleLogout }) {
             className="user-avatar"
           />
           <div className="user-info">
-            <p className="user-name">Abdoul aziz Ndour</p>
+            <p className="user-name">Fatoumata Camara</p>
             <p className="user-status">
               <span className="status-dot"></span>
               en ligne

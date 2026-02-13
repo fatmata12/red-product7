@@ -42,7 +42,7 @@ function Sidebar() {
         </ul>
 
         <div className="user">
-          <p>MAMADOU NDOUR</p>
+          <p>Fatoumata Camara</p>
           <span>● en ligne</span>
         </div>
       </div>
