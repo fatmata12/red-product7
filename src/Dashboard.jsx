@@ -1,10 +1,26 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Dashboard.css';
 
 function Dashboard({ handleLogout }) {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Sidebar ouverte sur desktop, fermée sur mobile
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+
+  // Détection resize automatique
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLogoClick = () => {
     handleLogout();
@@ -16,32 +32,29 @@ function Dashboard({ handleLogout }) {
     navigate('/');
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
-  const handleHamburgerClick = () => {
-    navigate('/hotels');
-  };
-
   return (
     <div className="app-layout">
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+      {/* Hamburger (Mobile seulement) */}
+      <button
+        className={`hamburger-btn ${sidebarOpen ? 'active' : ''}`}
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      {/* Overlay */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? 'active' : ''}`}
+        onClick={() => setSidebarOpen(false)}
+      ></div>
+
+      {/* ================= SIDEBAR ================= */}
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <button 
-            className="sidebar-close-btn"
-            onClick={toggleSidebar}
-            aria-label="Fermer le menu"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-          
-          <div 
-            className="sidebar-logo-icon" 
+          <div
+            className="sidebar-logo-icon"
             onClick={handleLogoClick}
             style={{ cursor: 'pointer' }}
           >
@@ -55,33 +68,35 @@ function Dashboard({ handleLogout }) {
         <div className="sidebar-section">
           <p className="sidebar-section-title">PRINCIPAL</p>
           <nav className="sidebar-nav">
-            <button className="sidebar-item active" onClick={() => navigate('/dashboard')}>
-              <span className="sidebar-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-                </svg>
-              </span>
+            <button
+              className="sidebar-item active"
+              onClick={() => navigate('/dashboard')}
+            >
+              <svg className="sidebar-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+              </svg>
               Dashboard
             </button>
-            <button className="sidebar-item" onClick={() => navigate('/hotels')}>
-              <span className="sidebar-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V7H1v13h2v-2h18v2h2v-9c0-2.21-1.79-4-4-4z"/>
-                </svg>
-              </span>
+            <button
+              className="sidebar-item"
+              onClick={() => navigate('/hotels')}
+            >
+              <svg className="sidebar-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7 11H5v7h2v-7zm4 0H9v7h2v-7zm4 0h-2v7h2v-7zm4 0h-2v7h2v-7zm-8-9H9v2h2V2zm4 0h-2v2h2V2zm4 0h-2v2h2V2zm-12 4H9v2h2V6zm4 0h-2v2h2V6zm4 0h-2v2h2V6z"/>
+              </svg>
               Liste des hôtels
             </button>
           </nav>
         </div>
 
         <div className="sidebar-user">
-          <img 
-            src="https://i.pravatar.cc/150?img=12" 
-            alt="User" 
+          <img
+            src="https://i.pravatar.cc/150?img=12"
+            alt="User"
             className="user-avatar"
           />
           <div className="user-info">
-            <p className="user-name">Fatoumata Camara</p>
+            <p className="user-name">Abdoul aziz Ndour</p>
             <p className="user-status">
               <span className="status-dot"></span>
               en ligne
@@ -90,138 +105,113 @@ function Dashboard({ handleLogout }) {
         </div>
       </aside>
 
-      {sidebarOpen && (
-        <div 
-          className="sidebar-overlay" 
-          onClick={toggleSidebar}
-        ></div>
-      )}
-
-      <main className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      {/* ================= MAIN CONTENT ================= */}
+      <main className="main-content">
+        {/* Top Bar */}
         <div className="top-bar">
-          <div className="top-bar-left">
-            {!sidebarOpen && (
-              <button 
-                className="hamburger-btn-open"
-                onClick={handleHamburgerClick}
-                aria-label="Aller à la liste des hôtels"
-              >
-                <span></span>
-                <span></span>
-                <span></span>
-              </button>
-            )}
-            <h1 className="page-title">Dashboard</h1>
-          </div>
+          <h1 className="page-title">Dashboard</h1>
+
           <div className="top-bar-actions">
             <div className="search-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="m21 21-4.35-4.35"/>
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
               </svg>
               <input type="text" placeholder="Recherche" />
             </div>
-            <div className="notification-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
-              </svg>
-              <span className="notification-badge">3</span>
-            </div>
-            <img 
-              src="https://i.pravatar.cc/150?img=12" 
-              alt="Profile" 
+
+            <img
+              src="https://i.pravatar.cc/150?img=12"
+              alt="Profile"
               className="profile-pic"
             />
+
             <button className="logout-icon" onClick={handleLogoutClick}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 5l7 7-7 7M3 12h14" />
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
               </svg>
             </button>
           </div>
         </div>
 
+        {/* Dashboard Content */}
         <div className="dashboard-content">
           <div className="welcome-section">
             <h2>Bienvenue sur RED Product</h2>
-            <p className="welcome-subtitle">Lorem ipsum dolor sit amet consectetur</p>
+            <p className="welcome-subtitle">
+              Gestion complète de vos hôtels
+            </p>
           </div>
 
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-icon purple">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                <svg fill="white" viewBox="0 0 24 24" width="32" height="32">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
                 </svg>
               </div>
               <div className="stat-info">
                 <h3 className="stat-number">125</h3>
                 <p className="stat-label">Formulaires</p>
-                <p className="stat-description">Je ne sais pas quoi mettre</p>
               </div>
             </div>
 
             <div className="stat-card">
               <div className="stat-icon teal">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+                <svg fill="white" viewBox="0 0 24 24" width="32" height="32">
+                  <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/>
                 </svg>
               </div>
               <div className="stat-info">
                 <h3 className="stat-number">40</h3>
                 <p className="stat-label">Messages</p>
-                <p className="stat-description">Je ne sais pas quoi mettre</p>
               </div>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon orange">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+              <div className="stat-icon yellow">
+                <svg fill="white" viewBox="0 0 24 24" width="32" height="32">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
               </div>
               <div className="stat-info">
                 <h3 className="stat-number">600</h3>
                 <p className="stat-label">Utilisateurs</p>
-                <p className="stat-description">Je ne sais pas quoi mettre</p>
               </div>
             </div>
 
             <div className="stat-card">
               <div className="stat-icon red">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
+                <svg fill="white" viewBox="0 0 24 24" width="32" height="32">
+                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                 </svg>
               </div>
               <div className="stat-info">
                 <h3 className="stat-number">25</h3>
                 <p className="stat-label">E-mails</p>
-                <p className="stat-description">Je ne sais pas quoi mettre</p>
-              </div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-icon purple">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V7H1v13h2v-2h18v2h2v-9c0-2.21-1.79-4-4-4z"/>
-                </svg>
-              </div>
-              <div className="stat-info">
-                <h3 className="stat-number">40</h3>
-                <p className="stat-label">Hôtels</p>
-                <p className="stat-description">Je ne sais pas quoi mettre</p>
               </div>
             </div>
 
             <div className="stat-card">
               <div className="stat-icon blue">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                <svg fill="white" viewBox="0 0 24 24" width="32" height="32">
+                  <path d="M12 11.5A2.5 2.5 0 0 0 9.5 9a2.5 2.5 0 0 0-2.5 2.5A2.5 2.5 0 0 0 9.5 14a2.5 2.5 0 0 0 2.5-2.5zM12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13s-7-7.75-7-13a7 7 0 0 1 7-7z"/>
+                </svg>
+              </div>
+              <div className="stat-info">
+                <h3 className="stat-number">40</h3>
+                <p className="stat-label">Hôtels</p>
+              </div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-icon magenta">
+                <svg fill="white" viewBox="0 0 24 24" width="32" height="32">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                 </svg>
               </div>
               <div className="stat-info">
                 <h3 className="stat-number">02</h3>
                 <p className="stat-label">Entités</p>
-                <p className="stat-description">Je ne sais pas quoi mettre</p>
               </div>
             </div>
           </div>

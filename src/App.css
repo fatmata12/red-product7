@@ -163,27 +163,27 @@
   line-height: 1.6;
   margin-bottom: 30px;
 }
-/* Bouton Embaucher caché sur PC */
-.btn-embaucher {
-  display: none;
-}
-
 
 /* ========== MEDIA QUERIES (RESPONSIVE) ========== */
 
-/* Tablettes et mobiles (moins de 768px) */
+/* Tablettes (moins de 768px) */
 @media screen and (max-width: 768px) {
   .login-card {
     max-width: 400px;
     padding: 40px 30px;
   }
-
-  /* Afficher le bouton seulement sur mobile */
-  .btn-embaucher {
-    display: block;
-  }
 }
-
+.hamburger-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #000;
+}
 
 
 /* Mobiles (moins de 480px) */
