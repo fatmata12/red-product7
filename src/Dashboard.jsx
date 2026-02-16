@@ -91,7 +91,7 @@ function Dashboard({ handleLogout }) {
 
         <div className="sidebar-user">
           <img
-            src="https://i.pravatar.cc/150?img=12"
+            src="https://randomuser.me/api/portraits/women/75.jpg"
             alt="User"
             className="user-avatar"
           />
@@ -120,7 +120,7 @@ function Dashboard({ handleLogout }) {
             </div>
 
             <img
-              src="https://i.pravatar.cc/150?img=12"
+              src="https://randomuser.me/api/portraits/women/75.jpg"
               alt="Profile"
               className="profile-pic"
             />
@@ -219,6 +219,8 @@ function Dashboard({ handleLogout }) {
       </main>
     </div>
   );
+
+  
 }
 
 export default Dashboard;

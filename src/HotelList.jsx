@@ -54,7 +54,7 @@ function HotelList({ handleLogout }) {
     console.log('Form data:', formData);
     alert('Hôtel créé avec succès!');
     setShowCreateModal(false);
-    setFormData({ name:'', address:'', email:'', phone:'', price:'', currency:'F XOF', image:null });
+    setFormData({ name:' ',  address:' ',  email:' ',  phone:' ',  price:' ',  currency:'F XOF',  image:null });
   };
 
   const handleLogoClick = () => { handleLogout(); navigate('/'); };
@@ -98,13 +98,14 @@ function HotelList({ handleLogout }) {
           </nav>
         </div>
 
-        <div className="sidebar-user">
-          <img src="https://i.pravatar.cc/150?img=12" alt="User" className="user-avatar"/>
-          <div className="user-info">
-            <p className="user-name">Abdoul aziz Ndour</p>
-            <p className="user-status"><span className="status-dot"></span>en ligne</p>
-          </div>
-        </div>
+        {/* Dans la sidebar */}
+<div className="sidebar-user">
+  <img src="https://randomuser.me/api/portraits/women/75.jpg" alt="User" className="user-avatar"/>
+  <div className="user-info">
+    <p className="user-name">Fatoumata Camara</p>
+    <p className="user-status"><span className="status-dot"></span>en ligne</p>
+  </div>
+</div>
       </aside>
 
       {/* Main Content */}
@@ -117,7 +118,7 @@ function HotelList({ handleLogout }) {
             <div className="search-box">
               <input type="text" placeholder="Recherche" />
             </div>
-            <img src="https://i.pravatar.cc/150?img=12" alt="Profile" className="profile-pic"/>
+            <img src="https://randomuser.me/api/portraits/women/75.jpg" alt="Profile" className="profile-pic"/>
             <button className="logout-icon" onClick={handleLogoutClick}>Logout</button>
           </div>
         </div>
@@ -152,9 +153,18 @@ function HotelList({ handleLogout }) {
         {showCreateModal && (
           <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>CRÉER UN NOUVEAU HÔTEL</h2>
-              </div>
+              
+  <button 
+    className="modal-close-btn"
+    onClick={() => setShowCreateModal(false)}
+  >
+    ✕
+  </button>
+
+  <div className="modal-header">
+    <h2>CRÉER UN NOUVEAU HÔTEL</h2>
+  </div>
+
               
               <form onSubmit={handleSubmit}>
                 <div className="form-row">

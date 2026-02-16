@@ -366,3 +366,9 @@
 .logout-icon-btn:hover {
   color: #e74c3c; /* Devient rouge au survol */
 }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* espace entre label et rectangle */
+  margin-bottom: 20px; /* espace entre les blocs */
+}

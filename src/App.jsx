@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
 import { useState } from "react";
 import Login from './Login';
 import Dashboard from './Dashboard';
@@ -8,6 +9,9 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem('isLoggedIn') === 'true'
   );
+  // Forcer le mode clair
+    document.documentElement.style.colorScheme = 'light';
+    document.body.style.colorScheme = 'light';
 
   const handleLogin = (loginStatus) => {
     setIsLoggedIn(loginStatus);
